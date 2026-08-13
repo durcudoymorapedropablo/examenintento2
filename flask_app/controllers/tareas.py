@@ -290,7 +290,7 @@ def borrar_tarea(tarea_id):
         session["usuario_id"]
     )
 
-    if resultado == 1:
+    if resultado is not False:
 
         flash(
             "Tarea eliminada correctamente.",
@@ -325,7 +325,7 @@ def completar_tarea(tarea_id):
         session["usuario_id"]
     )
 
-    if resultado == 1:
+    if resultado is not False:
 
         flash(
             "Tarea marcada como completada.",

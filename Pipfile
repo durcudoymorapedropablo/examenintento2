@@ -4,15 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pymysql = "*"
 flask = "*"
+pymysql = "*"
 flask-bcrypt = "*"
-flask-login = "*"
 python-dotenv = "*"
-mysql-connector-python = "*"
 gunicorn = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.14"
+python_version = "3.12"

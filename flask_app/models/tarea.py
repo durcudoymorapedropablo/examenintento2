@@ -145,7 +145,6 @@ class Tarea:
                 fecha_completada = CURDATE()
             WHERE id = %(tarea_id)s
             AND usuario_id = %(usuario_id)s
-            AND completada = 0
         """
 
         return connectToMySQL("organitask").query_db(
@@ -155,4 +154,3 @@ class Tarea:
                 "usuario_id": usuario_id
             }
         )
-

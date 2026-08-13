@@ -78,7 +78,7 @@ def index():
                 for error in errores:
                     flash(error, "error")
 
-                return render_template("index.html", form=request.form)
+                return render_template("index.html")
 
             # BCRYPT
             password_hash = bcrypt.generate_password_hash(
@@ -122,7 +122,7 @@ def index():
                     "error"
                 )
 
-                return render_template("index.html", form=request.form)
+                return render_template("index.html")
 
             usuario = Usuario.obtener_por_email(email)
 
@@ -148,7 +148,7 @@ def index():
                 "error"
             )
 
-    return render_template("index.html", form=request.form)
+    return render_template("index.html")
 
 
 # ==========================
