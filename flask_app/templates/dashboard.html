@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organitask - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-page">
+<div class="dashboard-container">
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            <div class="messages">
+                {% for categoria, mensaje in mensajes %}
+                    <div class="flash {{ categoria }}">{{ mensaje }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <header class="dashboard-top">
+        <div>
+            <h1>Organitask</h1>
+            <div class="welcome">Bienvenid@ {{ session['nombre'] }}</div>
+        </div>
+        <nav class="dashboard-nav">
+            <a href="{{ url_for('nueva_tarea') }}">Nueva Tarea</a>
+            <a href="{{ url_for('logout') }}">Cerrar Sesión</a>
+        </nav>
+    </header>
+
+    <section class="dashboard-section">
+        <h2>Tareas</h2>
+
+        {% if tareas_pendientes %}
+            <div class="task-grid">
+                {% for tarea in tareas_pendientes %}
+                    <article class="task-card">
+                        <h3>
+                            <a href="{{ url_for('ver_tarea', tarea_id=tarea['id']) }}">{{ tarea['nombre'] }}</a>
+                        </h3>
+                        <div class="task-date">{{ tarea['fecha_entrega'] }}</div>
+                        <div class="task-description">{{ tarea['descripcion'] }}</div>
+
+                        <div class="task-actions">
+                            <a class="page-button secondary" href="{{ url_for('editar_tarea', tarea_id=tarea['id']) }}">Editar</a>
+                            <form action="{{ url_for('borrar_tarea', tarea_id=tarea['id']) }}" method="POST">
+                                <button class="page-button danger" type="submit" onclick="return confirm('¿Quieres borrar esta tarea?');">Borrar</button>
+                            </form>
+                            <form action="{{ url_for('completar_tarea', tarea_id=tarea['id']) }}" method="POST">
+                                <button class="page-button success" type="submit">Completado</button>
+                            </form>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box">No tienes tareas pendientes.</div>
+        {% endif %}
+    </section>
+
+    <section class="dashboard-section completed-section">
+        <h2>Tareas Completadas</h2>
+
+        {% if tareas_completadas %}
+            <div class="completed-grid">
+                {% for tarea in tareas_completadas %}
+                    <article class="completed-card">
+                        <h3>
+                            <a href="{{ url_for('ver_tarea', tarea_id=tarea['id']) }}">{{ tarea['nombre'] }}</a>
+                        </h3>
+                        <div class="completed-date">
+                            {% if tarea['fecha_completada'] %}
+                                {{ tarea['fecha_completada'] }}
+                            {% else %}
+                                {{ tarea['fecha_entrega'] }}
+                            {% endif %}
+                        </div>
+                        <a class="page-button primary view-button" href="{{ url_for('ver_tarea', tarea_id=tarea['id']) }}">Ver</a>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-box">Todavía no tienes tareas completadas.</div>
+        {% endif %}
+    </section>
+
+</div>
+</body>
+</html>

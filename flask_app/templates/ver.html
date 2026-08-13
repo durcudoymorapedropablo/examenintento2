@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organitask - {{ tarea['nombre'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="task-page">
+<div class="task-page-container">
+    <div class="page-card">
+        <div class="page-header">
+            <div>
+                <h1>{{ tarea['nombre'] }}</h1>
+                <p class="page-subtitle">Detalle de la tarea</p>
+            </div>
+            <a class="page-button secondary" href="{{ url_for('dashboard') }}">Volver al dashboard</a>
+        </div>
+
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% if mensajes %}
+                <div class="messages">
+                    {% for categoria, mensaje in mensajes %}
+                        <div class="flash {{ categoria }}">{{ mensaje }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="detail-list">
+            <div class="detail-row">
+                <span class="detail-label">Nombre</span>
+                <div class="detail-value">{{ tarea['nombre'] }}</div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Fecha de entrega</span>
+                <div class="detail-value">{{ tarea['fecha_entrega'] }}</div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Descripción</span>
+                <div class="detail-value">{{ tarea['descripcion'] }}</div>
+            </div>
+
+            <div class="detail-row">
+                <span class="detail-label">Estado</span>
+                <div class="detail-value">
+                    {% if tarea['completada'] %}
+                        <span class="status completed">Completada</span>
+                    {% else %}
+                        <span class="status pending">Pendiente</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if tarea['completada'] %}
+                <div class="detail-row">
+                    <span class="detail-label">Fecha de completado</span>
+                    <div class="detail-value">{{ tarea['fecha_completada'] }}</div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="button-row">
+            <a class="page-button primary" href="{{ url_for('editar_tarea', tarea_id=tarea['id']) }}">Editar</a>
+            <a class="page-button secondary" href="{{ url_for('dashboard') }}">Volver a mis tareas</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
